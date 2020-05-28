@@ -1,0 +1,8 @@
+.vscode
+.idea
+node_modules
+dist
+*.log
+.nfs*
+.directory
+.fuse_hidden*
