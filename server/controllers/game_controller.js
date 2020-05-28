@@ -1,27 +1,24 @@
 const puzzles = require('../data/puzzles')
-
+const { Board } = require('../models/board')
 function GameController () {
   this.getGame = (params) => {
     const board = params.board
     const layoutIndex  = params.layoutIndex
 
-    if (board) {
-      return this.getGameFromBoard(board)
-    } else if (layoutIndex) {
-      return this.getLayout(layoutIndex)
+    if (layoutIndex) {
+      return this.getBoardFromLayout(layoutIndex)
+    } else if (board) {
+      return this.getBoardFromString(board)
     }
 
-    return this.defaultGame()
+    return this.getBoardFromString(this.defaultBoard())
   }
 
-  this.defaultGame = () => {
-      return {
-        data: puzzles[Math.floor(Math.random() * puzzles.length)],
-        status: 200
-      }
+  this.defaultBoard = () => {
+    return puzzles[Math.floor(Math.random() * puzzles.length)]
   }
 
-  this.getLayout = (idx) => {
+  this.getBoardFromLayout = (idx) => {
     if (idx < 0 || idx >= puzzles.length) {
       const message = `invalid game idx provided: ${idx}`
       console.log(message)
@@ -31,14 +28,12 @@ function GameController () {
       }
     }
 
-    return {
-      status: 200,
-      data: puzzles[idx]
-    }
+    return this.getBoardFromString(puzzles[idx])
   }
 
-  this.getGameFromBoard = (boardString) => {
-    if (this.isGameValid(boardString)) {
+  this.getBoardFromString = (boardString) => {
+    const board = new Board(boardString)
+    if (board.isValid) {
       return {
         status: 200,
         data: boardString
@@ -50,6 +45,7 @@ function GameController () {
       }
     }
   }
+
   this.isGameValid = (gameString) => {
     return true
   }
