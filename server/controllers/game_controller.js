@@ -41,7 +41,7 @@ function GameController () {
     } else {
       return {
         status: 400,
-        data: { message: 'invalid game string provided' }
+        data: { message: 'invalid board string provided' }
       }
     }
   }
