@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import queryString from 'query-string'
+import Board from "./components/Board"
 import "./app.css";
 
 export default class App extends Component {
@@ -7,7 +7,7 @@ export default class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      boardArray: []
+      boardMatrix: []
     }
   }
 
@@ -17,15 +17,17 @@ export default class App extends Component {
       .then(res => res.json())
       .then((board) => {
         console.log(board)
-        this.setState({ boardArray: board })
+        this.setState({ boardMatrix: board.board })
       })
       .catch(console.log)
   }
+
   render() {
     return (
       <div>
         <h1 id="title">... xxx XXX Minesweeper XXX xxx ...</h1>
         <div id="board">
+        <Board {...this.state} />
         </div>
       </div>
     );

@@ -6,8 +6,21 @@
 #board {
   width: 640px;
   height: 640px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
 }
 
+.tile {
+  color: blue;
+  width: 30px;
+  height: 30px;
+}
 #board button {
   width: 40px;
   height: 40px;
