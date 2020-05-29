@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+
 const SERVER_PORT = 8080;
 
 const game = require('./routes/game')

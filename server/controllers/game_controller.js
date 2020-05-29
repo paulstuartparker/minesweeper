@@ -36,7 +36,7 @@ function GameController () {
     if (board.isValid) {
       return {
         status: 200,
-        data: boardString
+        data: { board: board.boardData }
       }
     } else {
       return {
