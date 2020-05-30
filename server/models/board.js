@@ -48,7 +48,7 @@ class Board {
           neighboringMines += 1
         }
         // right
-        if (y < this.size - 1 && boardMatrix[x][y + 1 == 'x']) {
+        if (y < this.size - 1 && boardMatrix[x][y + 1] == 'x') {
           neighboringMines += 1
         }
         // bottom right
