@@ -32,7 +32,7 @@ export default class Board extends Component {
       directions.map((ydir) => {
         let newx = x + xdir
         let newy = y + ydir
-        if (newx >= 0 && newx < this.props.size && newy > 0 && newy < this.props.size) {
+        if (newx >= 0 && newx < this.props.size && newy >= 0 && newy < this.props.size) {
           if (this.props.boardMatrix[newx][newy] != 'x') {
             emptyNeighbors.push([newx, newy])
           }

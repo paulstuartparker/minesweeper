@@ -28,7 +28,7 @@ export default class Tile extends Component {
       if (this.state.clicked === false) {
         this.props.incrementCounter()
       }
-      if (this.props.value === "_") {
+      if (this.props.value === "_" && this.state.clicked === false) {
         this.props.handleEmptyTileClick(this.props.x, this.props.y)
       }
 
