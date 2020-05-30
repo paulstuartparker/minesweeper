@@ -8,18 +8,19 @@ export default class Board extends Component {
       clickedCount: 0,
       won: false,
       lost: false,
+      emptyNeighborSet: new Set()
     }
   }
 
   handleEmptyTileClick(x, y) {
     const emptyNeighbors = this.getEmptyNeighbors(x, y)
-    console.log(emptyNeighbors)
+
     emptyNeighbors.forEach((xyArray, i) => {
       let x1 = xyArray[0]
       let y1 = xyArray[1]
+
       setImmediate(() => {
-        console.log(`${x1},${y1}`)
-        console.log(document.getElementById(`${x1},${y1}`))
+        // Slight hack - simulate click, which will recursively call emptyNeighbors
         document.getElementById(`${x1},${y1}`).click()
       })
     });
@@ -33,8 +34,16 @@ export default class Board extends Component {
         let newx = x + xdir
         let newy = y + ydir
         if (newx >= 0 && newx < this.props.size && newy >= 0 && newy < this.props.size) {
-          if (this.props.boardMatrix[newx][newy] != 'x') {
-            emptyNeighbors.push([newx, newy])
+          let neighborVal = this.props.boardMatrix[newx][newy]
+          if (neighborVal != 'x') {
+            let setKey = `${newx},${newy}`
+            // Use a set here to ensure we don't repeat work.
+            if (!this.state.emptyNeighborSet.has(setKey)) {
+              emptyNeighbors.push([newx, newy])
+              let oldSet = this.state.emptyNeighborSet
+              oldSet.add(setKey)
+              this.setState({emptyNeighborSet: oldSet})
+            }
           }
         }
       })
@@ -50,14 +59,15 @@ export default class Board extends Component {
     let { clickedCount, won, lost } = this.state
     this.setState({clickedCount: clickedCount += 1})
     // if the number of clicks == the numer of non-bomb spaces on the board, you win.
-    if (this.props.size * this.props.size - this.state.clickedCount - this.props.bombCount === 0) {
+    if (this.props.size * this.props.size - this.state.clickedCount - this.props.bombCount - 1 === 0) {
       this.setState({won: true})
     }
+    console.log(this.state.clickedCount)
   }
 
   render() {
-    console.log(this.props)
-    console.log(this.state)
+    // console.log(this.props)
+    // console.log(this.state)
     if (this.state.lost) {
       return (<div className="lost">YOU LOSE</div>)
     }

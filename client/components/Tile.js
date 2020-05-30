@@ -11,12 +11,16 @@ export default class Tile extends Component {
       let { clicked, flag } = this.state
       let { value, x, y } = this.props
       value = value === "x" ? "💣" : value
+      // value = value === "_" ? "" : value
       return (
         <div className="tile" id={`${x},${y}`} onClick={this.handleClicked.bind(this)} onContextMenu={this.handleFlagged.bind(this)}>{clicked && !flag ? value : (flag || "")}</div>
       )
     }
 
     handleClicked() {
+      let wasClicked = this.state.clicked
+      this.setState({clicked: true})
+
       if (this.state.flag) {
         return
       }
@@ -25,14 +29,13 @@ export default class Tile extends Component {
         this.props.handleBombClick()
         return
       }
-      if (this.state.clicked === false) {
+      if (wasClicked === false) {
         this.props.incrementCounter()
       }
-      if (this.props.value === "_" && this.state.clicked === false) {
+
+      if (this.props.value === "_" && wasClicked == false) {
         this.props.handleEmptyTileClick(this.props.x, this.props.y)
       }
-
-      this.setState({clicked: true})
 
     }
 
