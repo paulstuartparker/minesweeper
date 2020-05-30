@@ -7,7 +7,8 @@ export default class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      boardMatrix: []
+      boardMatrix: [],
+      bombCount: 0,
     }
   }
 
@@ -17,7 +18,11 @@ export default class App extends Component {
       .then(res => res.json())
       .then((board) => {
         console.log(board)
-        this.setState({ boardMatrix: board.board })
+        this.setState({
+          boardMatrix: board.board,
+          bombCount: board.bombCount,
+          size: board.board.length
+        })
       })
       .catch(console.log)
   }

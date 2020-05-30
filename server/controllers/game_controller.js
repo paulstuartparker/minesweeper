@@ -36,7 +36,7 @@ function GameController () {
     if (board.isValid) {
       return {
         status: 200,
-        data: { board: board.boardData }
+        data: { board: board.boardData, bombCount: board.bombCount }
       }
     } else {
       return {

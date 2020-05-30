@@ -4,6 +4,7 @@ class Board {
 
   constructor (boardString) {
     this.size = 16
+    this.bombCount = 0
     this.isValid = this.isBoardStringValid(boardString)
     this.boardData = this.isValid ? this.getBoardFromString(boardString) : null
   }
@@ -34,6 +35,7 @@ class Board {
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         if (boardMatrix[x][y] == 'x') {
+          this.bombCount += 1
           continue
         }
 

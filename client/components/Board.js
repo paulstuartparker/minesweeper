@@ -1,19 +1,39 @@
 import React, { Component } from "react"
-import { Tile } from "./Tile"
+import Tile from "./Tile"
 
 export default class Board extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      clickedCount: 0,
+      won: false,
+      lost: false,
+    }
+  }
+
   render() {
     console.log(this.props)
-      return (this.props.boardMatrix.map((row) => {
+      return (this.props.boardMatrix.map((row, rowidx) => {
         return (
-          <div className="row">
-            {(row.map((tile) => {
+          <div className="row" key={rowidx}>
+            {(row.map((tile, colidx) => {
               return (
-                <div className="tile">{tile}</div>
+                <Tile
+                  key={colidx}
+                  x={rowidx}
+                  y={colidx}
+                  value={tile}
+                  // bombClick=
+                  // onClick={() => this.handleTileClick(rowidx, colidx)}
+                />
               )
             }))}
           </div>
         )
       }))
   }
+
+  // handleTileClick() {
+  //
+  // }
 }
