@@ -11,13 +11,37 @@ export default class Board extends Component {
     }
   }
 
-  handleEmptyTileClick() {
-
+  handleEmptyTileClick(x, y) {
+    const emptyNeighbors = this.getEmptyNeighbors(x, y)
+    console.log(emptyNeighbors)
+    emptyNeighbors.forEach((xyArray, i) => {
+      let x1 = xyArray[0]
+      let y1 = xyArray[1]
+      setImmediate(() => {
+        console.log(`${x1},${y1}`)
+        console.log(document.getElementById(`${x1},${y1}`))
+        document.getElementById(`${x1},${y1}`).click()
+      })
+    });
   }
 
-  getEmptyNeighbors() {
-
+  getEmptyNeighbors(x, y) {
+    const emptyNeighbors = []
+    const directions = [-1, 0, 1]
+    directions.map((xdir) => {
+      directions.map((ydir) => {
+        let newx = x + xdir
+        let newy = y + ydir
+        if (newx >= 0 && newx < this.props.size && newy > 0 && newy < this.props.size) {
+          if (this.props.boardMatrix[newx][newy] != 'x') {
+            emptyNeighbors.push([newx, newy])
+          }
+        }
+      })
+    })
+    return emptyNeighbors
   }
+
   handleBombClick() {
     this.setState({lost: true})
   }
@@ -52,7 +76,7 @@ export default class Board extends Component {
                 value={tile}
                 handleBombClick={() => this.handleBombClick()}
                 incrementCounter={() => this.incrementCounter()}
-                handleEmptyTileClick={(x, y) => this.handleEmptyTileClick()}
+                handleEmptyTileClick={(x, y) => this.handleEmptyTileClick(x, y)}
               />
             )
           }))}

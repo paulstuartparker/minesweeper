@@ -17,14 +17,23 @@ export default class Tile extends Component {
     }
 
     handleClicked() {
-      if (this.props.value == "x") {
+      if (this.state.flag) {
+        return
+      }
+
+      if (this.props.value === "x") {
         this.props.handleBombClick()
         return
       }
       if (this.state.clicked === false) {
         this.props.incrementCounter()
       }
+      if (this.props.value === "_") {
+        this.props.handleEmptyTileClick(this.props.x, this.props.y)
+      }
+
       this.setState({clicked: true})
+
     }
 
     handleFlagged(e) {
