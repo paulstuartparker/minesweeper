@@ -6,8 +6,8 @@ export default class Tile extends Component {
     this.props.handleClicked(this.props.x, this.props.y);
   }
 
-  handleFlagged() {
-    this.props.handleFlagged(this.props.x, this.props.y);
+  handleFlagged(e) {
+    this.props.handleFlagged(e, this.props.x, this.props.y);
   }
 
   render() {

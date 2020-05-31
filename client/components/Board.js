@@ -93,8 +93,7 @@ export default class Board extends Component {
 
 
   handleClicked(x, y) {
-    console.log(this.state);
-    const { tiles, clickedCount } = this.state;
+    const { tiles } = this.state;
 
     const tile = tiles[x][y];
 
@@ -108,7 +107,6 @@ export default class Board extends Component {
       return;
     }
 
-
     tile.clicked = true;
     // end game if user clicks a bomb
     if (tile.value === "x") {
@@ -118,9 +116,22 @@ export default class Board extends Component {
 
 
     tiles[x][y] = tile;
-    this.setState({ tiles, clickedCount: clickedCount + 1 });
+    this.setState({ tiles });
     if (tile.value === "_") {
       this.handleEmptyTileClick(x, y);
+    }
+
+
+    // This unfortunate piece of code is the result of not having enough time to figure out why my increment state wouldn't update.
+    const flatTiles = tiles.flat(2);
+    let tilecount = 0;
+    for (let i = 0; i < flatTiles.length; i++) {
+      if (flatTiles[i].clicked) {
+        tilecount += 1;
+      }
+    }
+    if ((this.props.size * this.props.size - tilecount - this.props.bombCount) === 0) {
+      this.setState({ won: true });
     }
   }
 
@@ -133,19 +144,24 @@ export default class Board extends Component {
     if (size * size - clickedCount - bombCount - 1 === 0) {
       this.setState({ won: true });
     }
-    console.log(clickedCount);
   }
 
-  handleFlagged(e) {
+  handleFlagged(e, x, y) {
+    const { tiles } = this.state;
+
+    const tile = tiles[x][y];
     e.preventDefault();
-    if (this.clicked) {
+    if (tile.clicked) {
       return;
     }
-    if (this.flag === "⚐") {
-      this.setState({ flag: "", clicked: false });
+    if (tile.flag === "⚐") {
+      tile.flag = "";
     } else {
-      this.setState({ flag: "⚐" });
+      tile.flag = "⚐";
     }
+
+    tiles[x][y] = tile;
+    this.setState({ tiles });
   }
 
   render() {
@@ -155,10 +171,10 @@ export default class Board extends Component {
       return (<div className="lost">YOU LOSE</div>);
     }
 
+
     if (won) {
       return (<div className="won">YOU WIN</div>);
     }
-
     return (tiles.map((row, rowidx) => (
       <div className="row" key={`col_${rowidx}`}>
         {(row.map(tile => (
@@ -170,7 +186,7 @@ export default class Board extends Component {
             clicked={tile.clicked}
             flag={tile.flag}
             handleClicked={(x, y) => this.handleClicked(x, y)}
-            handleFlagged={() => this.handleFlagged()}
+            handleFlagged={(e, x, y) => this.handleFlagged(e, x, y)}
             handleBombClick={() => this.handleBombClick()}
           />
         )))}
