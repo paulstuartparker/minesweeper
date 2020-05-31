@@ -41,13 +41,17 @@
   justify-content: center;
   flex-direction: column;
 }
+
 .tile {
   background: #F0F0F0;
-  color: blue;
+  color: darkblue;
   width: 30px;
   height: 30px;
   border: 1px solid #696969;
-  text-align: center
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 30px;
 }
 
 #board button {
@@ -61,4 +65,12 @@
 
 #title {
   text-align: center;
+}
+
+#outcome {
+  text-align: center;
+  margin: 0 auto;
+  color: green;
+  font-weight: 400;
+  font-size: 54px;
 }

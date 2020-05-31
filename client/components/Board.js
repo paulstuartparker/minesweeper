@@ -177,11 +177,11 @@ export default class Board extends Component {
 
     // TODO: render better win and lose scenarios, reveal board.
     if (lost) {
-      return (<div className="lost">YOU LOSE</div>);
+      return (<div id="outcome">You Lose... Bummer Try again!</div>);
     }
 
     if (won) {
-      return (<div className="won">YOU WIN</div>);
+      return (<div id="outcome">YOU WIN</div>);
     }
     return (tiles.map((row, rowidx) => (
       <div className="row" key={`col_${rowidx}`}>

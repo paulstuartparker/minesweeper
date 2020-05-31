@@ -15,8 +15,8 @@ export default class Tile extends Component {
       clicked, flag, value, x, y
     } = this.props;
 
-    const displayValue = value === "x" ? "💣" : value;
-    // value = value === "_" ? "" : value
+    let displayValue = value === "x" ? "💣" : value;
+    displayValue = value === "_" ? "-" : value;
     return (
       <div
         className="tile"
