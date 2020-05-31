@@ -21,7 +21,8 @@ export default class App extends Component {
         this.setState({
           boardMatrix: board.board,
           bombCount: board.bombCount,
-          size: board.board.length
+          size: board.board.length,
+          refresh: false,
         });
       })
       .catch(console.log);
@@ -29,8 +30,7 @@ export default class App extends Component {
 
 
   restartGame() {
-    console.log(window);
-    window.location.reload(false);
+    this.setState({ refresh: true });
   }
 
   render() {

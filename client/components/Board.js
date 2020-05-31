@@ -35,12 +35,21 @@ export default class Board extends Component {
     this.handleFlagged = this.handleFlagged.bind(this);
     this.handleClicked = this.handleClicked.bind(this);
     this.handleEmptyTileClick = this.handleEmptyTileClick.bind(this);
-    // this.handleBombClick = this.handleBombClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     const newTiles = Board.buildTileMatrix(nextProps.boardMatrix);
     this.setState({ tiles: newTiles });
+    if (nextProps.refresh) {
+      this.setState({
+        clickedCount: 0,
+        won: false,
+        lost: false,
+        emptyNeighborSet: new Set(),
+        tiles: newTiles
+      });
+    }
   }
 
   getEmptyNeighbors(x, y) {
