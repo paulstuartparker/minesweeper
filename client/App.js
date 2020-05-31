@@ -13,6 +13,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    // TODO: Handle errors/ render error message on invalid board or invalid idx
     const qstring = window.location.search;
     fetch(`http://localhost:8080/game/${qstring}`)
       .then(res => res.json())

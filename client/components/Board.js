@@ -29,9 +29,10 @@ export default class Board extends Component {
       clickedCount: 0,
       won: false,
       lost: false,
-      emptyNeighborSet: new Set(),
+      visitedSet: new Set(),
       tiles: []
     };
+    // TODO: is there a cleaner place for this?
     this.handleFlagged = this.handleFlagged.bind(this);
     this.handleClicked = this.handleClicked.bind(this);
     this.handleEmptyTileClick = this.handleEmptyTileClick.bind(this);
@@ -40,15 +41,16 @@ export default class Board extends Component {
 
   componentWillReceiveProps(nextProps) {
     const newTiles = Board.buildTileMatrix(nextProps.boardMatrix);
-    this.setState({ tiles: newTiles });
     if (nextProps.refresh) {
       this.setState({
         clickedCount: 0,
         won: false,
         lost: false,
-        emptyNeighborSet: new Set(),
+        visitedSet: new Set(),
         tiles: newTiles
       });
+    } else {
+      this.setState({ tiles: newTiles });
     }
   }
 
@@ -56,7 +58,7 @@ export default class Board extends Component {
     const emptyNeighbors = [];
     const directions = [-1, 0, 1];
     const { size, boardMatrix } = this.props;
-    const { emptyNeighborSet } = this.state;
+    const { visitedSet } = this.state;
     directions.forEach((xdir) => {
       directions.forEach((ydir) => {
         // Dont bother performing any operations if x and y are not changed.
@@ -72,8 +74,8 @@ export default class Board extends Component {
               const setKey = `${newx},${newy}`;
               // Use a set here to ensure we don't repeat work.
               emptyNeighbors.push([newx, newy]);
-              if (!emptyNeighborSet.has(setKey)) {
-                emptyNeighborSet.add(setKey);
+              if (!visitedSet.has(setKey)) {
+                visitedSet.add(setKey);
               }
             }
           }
@@ -81,7 +83,7 @@ export default class Board extends Component {
       });
     });
 
-    this.setState({ emptyNeighborSet });
+    this.setState({ visitedSet });
     return emptyNeighbors;
   }
 
@@ -125,9 +127,11 @@ export default class Board extends Component {
 
     tiles[x][y] = tile;
     this.setState({ tiles });
+
     if (tile.value === "_") {
       this.handleEmptyTileClick(x, y);
     }
+
     this.determineGameWon();
   }
 
@@ -148,15 +152,6 @@ export default class Board extends Component {
     }
   }
 
-  incrementCounter() {
-    let { clickedCount } = this.state;
-    this.setState({ clickedCount: clickedCount += 1 });
-    const { size, bombCount } = this.props;
-    // if the number of clicks == the numer of non-bomb spaces on the board, you win.
-    if (size * size - clickedCount - bombCount - 1 === 0) {
-      this.setState({ won: true });
-    }
-  }
 
   handleFlagged(e, x, y) {
     const { tiles } = this.state;
