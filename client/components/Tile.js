@@ -2,8 +2,12 @@ import React, { Component } from "react";
 
 // Tile is a 'dumb' component. Store state in Board.
 export default class Tile extends Component {
-  handleClicked(e) {
-    this.props.handleClicked(e);
+  handleClicked() {
+    this.props.handleClicked(this.props.x, this.props.y);
+  }
+
+  handleFlagged() {
+    this.props.handleFlagged(this.props.x, this.props.y);
   }
 
   render() {

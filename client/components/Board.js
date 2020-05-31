@@ -18,95 +18,112 @@ export default class Board extends Component {
         tiles[x].push(newTile);
       });
     });
-    console.log(tiles);
+
     return tiles;
   }
 
   constructor(props) {
     super(props);
-    const { boardMatrix } = props.boardMatrix;
-    console.log(props);
+
     this.state = {
       clickedCount: 0,
       won: false,
       lost: false,
       emptyNeighborSet: new Set(),
-      boardMatrix,
       tiles: []
     };
+    this.handleFlagged = this.handleFlagged.bind(this);
+    this.handleClicked = this.handleClicked.bind(this);
+    this.handleEmptyTileClick = this.handleEmptyTileClick.bind(this);
+    // this.handleBombClick = this.handleBombClick.bind(this);
   }
 
-  componentDidMount() {
-    // { boardMatrix } = this.props.boardMatrix
-    // this.setState({ tiles: Board.buildTileMatrix(boardMatrix) });
+  componentWillReceiveProps(nextProps) {
+    const newTiles = Board.buildTileMatrix(nextProps.boardMatrix);
+    this.setState({ tiles: newTiles });
   }
 
   getEmptyNeighbors(x, y) {
     const emptyNeighbors = [];
     const directions = [-1, 0, 1];
     const { size, boardMatrix } = this.props;
-    directions.foreach((xdir) => {
-      directions.foreach((ydir) => {
-        const { emptyNeighborSet } = this.state;
-        const newx = x + xdir;
-        const newy = y + ydir;
-        if (newx >= 0 && newx < size && newy >= 0 && newy < this.size) {
-          const neighborVal = boardMatrix[newx][newy];
-          if (neighborVal !== 'x') {
-            const setKey = `${newx},${newy}`;
-            // Use a set here to ensure we don't repeat work.
-            if (!emptyNeighborSet.has(setKey)) {
-              emptyNeighbors.push([newx, newy]);
+    const { emptyNeighborSet } = this.state;
+    directions.forEach((xdir) => {
+      directions.forEach((ydir) => {
+        // Dont bother performing any operations if x and y are not changed.
+        if (!(xdir === 0 && ydir === 0)) {
+          const newx = x + xdir;
+          const newy = y + ydir;
 
-              emptyNeighborSet.add(setKey);
-              this.setState({ emptyNeighborSet });
+
+          if (newx >= 0 && newx < size && newy >= 0 && newy < this.props.size) {
+            const neighborVal = boardMatrix[newx][newy];
+
+            if (neighborVal !== 'x') {
+              const setKey = `${newx},${newy}`;
+              // Use a set here to ensure we don't repeat work.
+              emptyNeighbors.push([newx, newy]);
+              if (!emptyNeighborSet.has(setKey)) {
+                emptyNeighborSet.add(setKey);
+              }
             }
           }
         }
       });
     });
+
+    this.setState({ emptyNeighborSet });
     return emptyNeighbors;
   }
 
+
   handleEmptyTileClick(x, y) {
     const emptyNeighbors = this.getEmptyNeighbors(x, y);
+    if (emptyNeighbors.length === 0) {
+      return;
+    }
+    const { tiles } = this.state;
 
     emptyNeighbors.forEach((xyArray) => {
       const x1 = xyArray[0];
       const y1 = xyArray[1];
-
-      setImmediate(() => {
-        // Slight hack - simulate click, which will recursively call emptyNeighbors
-        document.getElementById(`${x1},${y1}`).click();
-      });
+      this.handleClicked(x1, y1);
     });
   }
 
-  handleClicked(e) {
-    console.log(e);
-    const wasClicked = this.clicked;
-    this.setState({ clicked: true });
 
-    if (this.flag) {
+  handleClicked(x, y) {
+    console.log(this.state);
+    const { tiles, clickedCount } = this.state;
+
+    const tile = tiles[x][y];
+
+
+    // No op if flag is placed
+    if (tile.flag) {
       return;
     }
 
-    if (this.value === "x") {
-      this.props.handleBombClick();
+    if (tile.clicked) {
       return;
     }
-    if (wasClicked === false) {
-      this.props.incrementCounter();
+
+
+    tile.clicked = true;
+    // end game if user clicks a bomb
+    if (tile.value === "x") {
+      this.setState({ lost: true });
+      return;
     }
 
-    if (this.value === "_" && wasClicked == false) {
-      this.props.handleEmptyTileClick(this.x, this.y);
+
+    tiles[x][y] = tile;
+    this.setState({ tiles, clickedCount: clickedCount + 1 });
+    if (tile.value === "_") {
+      this.handleEmptyTileClick(x, y);
     }
   }
 
-  handleBombClick() {
-    this.setState({ lost: true });
-  }
 
   incrementCounter() {
     let { clickedCount } = this.state;
@@ -133,7 +150,7 @@ export default class Board extends Component {
 
   render() {
     const { lost, won, tiles } = this.state;
-    console.log(this.state);
+
     if (lost) {
       return (<div className="lost">YOU LOSE</div>);
     }
@@ -152,7 +169,7 @@ export default class Board extends Component {
             value={tile.value}
             clicked={tile.clicked}
             flag={tile.flag}
-            handleClicked={() => this.handleClicked()}
+            handleClicked={(x, y) => this.handleClicked(x, y)}
             handleFlagged={() => this.handleFlagged()}
             handleBombClick={() => this.handleBombClick()}
           />
