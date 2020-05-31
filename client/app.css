@@ -15,14 +15,29 @@
   flex-direction: row;
   margin: 0 auto;
 }
+#restart {
 
+  text-align: center;
+  color: purple;
+  font-size: 32px;
+  border: 1px solid black;
+  width: 300px;
+  background-color: orange;
+  margin: 0 auto;
+}
+
+#wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 .tile {
   background: #F0F0F0;
   color: blue;
   width: 30px;
   height: 30px;
   border: 1px solid #696969;
-  text-align: center;
+  text-align: center
 }
 
 #board button {
