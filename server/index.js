@@ -11,4 +11,4 @@ app.use(express.static('public'));
 
 app.use('/game', game);
 
-app.listen(SERVER_PORT, () => console.log(`Node server listening on port ${SERVER_PORT}!`));
+app.listen(process.env.PORT || SERVER_PORT, () => console.log(`Node server listening on port ${process.env.PORT || SERVER_PORT}!`));

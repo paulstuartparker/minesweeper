@@ -39,7 +39,6 @@ export default class Board extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     const newTiles = Board.buildTileMatrix(nextProps.boardMatrix);
     this.setState({ tiles: newTiles });
     if (nextProps.refresh) {

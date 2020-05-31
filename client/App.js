@@ -17,7 +17,6 @@ export default class App extends Component {
     fetch(`http://localhost:8080/game/${qstring}`)
       .then(res => res.json())
       .then((board) => {
-        console.log(board);
         this.setState({
           boardMatrix: board.board,
           bombCount: board.bombCount,
