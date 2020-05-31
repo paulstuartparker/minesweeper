@@ -1,53 +1,27 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
 
-
+// Tile is a 'dumb' component. Store state in Board.
 export default class Tile extends Component {
-    constructor(props) {
-      super(props)
-      this.state = { clicked: false, flag: "" }
-    }
+  handleClicked(e) {
+    this.props.handleClicked(e);
+  }
 
-    render() {
-      let { clicked, flag } = this.state
-      let { value, x, y } = this.props
-      value = value === "x" ? "💣" : value
-      // value = value === "_" ? "" : value
-      return (
-        <div className="tile" id={`${x},${y}`} onClick={this.handleClicked.bind(this)} onContextMenu={this.handleFlagged.bind(this)}>{clicked && !flag ? value : (flag || "")}</div>
-      )
-    }
+  render() {
+    const {
+      clicked, flag, value, x, y
+    } = this.props;
 
-    handleClicked() {
-      let wasClicked = this.state.clicked
-      this.setState({clicked: true})
-
-      if (this.state.flag) {
-        return
-      }
-
-      if (this.props.value === "x") {
-        this.props.handleBombClick()
-        return
-      }
-      if (wasClicked === false) {
-        this.props.incrementCounter()
-      }
-
-      if (this.props.value === "_" && wasClicked == false) {
-        this.props.handleEmptyTileClick(this.props.x, this.props.y)
-      }
-
-    }
-
-    handleFlagged(e) {
-      e.preventDefault()
-      if (this.state.clicked) {
-        return
-      }
-      if (this.state.flag == "⚐") {
-        this.setState({flag: "", clicked: false})
-      } else {
-        this.setState({flag: "⚐"})
-      }
-    }
+    const displayValue = value === "x" ? "💣" : value;
+    // value = value === "_" ? "" : value
+    return (
+      <div
+        className="tile"
+        id={`${x},${y}`}
+        onClick={this.handleClicked.bind(this)}
+        onContextMenu={this.handleFlagged.bind(this)}
+      >
+        {clicked && !flag ? displayValue : (flag || "")}
+      </div>
+    );
+  }
 }
