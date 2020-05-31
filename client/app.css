@@ -2,7 +2,15 @@
   box-sizing: border-box;
   font-family: monospace;
 }
-
+#title {
+  font-family: "Lucida Console", Courier, monospace;
+}
+#banner {
+  width: 400px;
+  justify-content: center;
+  margin: 0 auto;
+  margin-left: 42%;
+}
 #board {
   width: 640px;
   height: 640px;

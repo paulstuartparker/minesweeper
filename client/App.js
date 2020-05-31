@@ -36,7 +36,9 @@ export default class App extends Component {
   render() {
     return (
       <div id="wrapper">
-        <h1 id="title">... xxx XXX Minesweeper XXX xxx ...</h1>
+        <marquee id="banner" scrollamount="10" direction="left" behavior="slide">
+          <h1 id="title">Minesweeper</h1>
+        </marquee>
         <div id="restart" onClick={this.restartGame}>Retry</div>
         <div id="board">
           <Board {...this.state} />
