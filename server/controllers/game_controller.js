@@ -1,55 +1,51 @@
-const puzzles = require('../data/puzzles')
-const { Board } = require('../models/board')
-function GameController () {
+const puzzles = require('../data/puzzles');
+const { Board } = require('../models/board');
+
+function GameController() {
   this.getGame = (params) => {
-    const board = params.board
-    const layoutIndex  = params.layoutIndex
+    const { board } = params;
+    const { layoutIndex } = params;
 
     if (layoutIndex) {
-      return this.getBoardFromLayout(layoutIndex)
-    } else if (board) {
-      return this.getBoardFromString(board)
+      return this.getBoardFromLayout(layoutIndex);
+    } if (board) {
+      return this.getBoardFromString(board);
     }
 
-    return this.getBoardFromString(this.defaultBoard())
-  }
+    return this.getBoardFromString(this.defaultBoard());
+  };
 
-  this.defaultBoard = () => {
-    return puzzles[Math.floor(Math.random() * puzzles.length)]
-  }
+  this.defaultBoard = () => puzzles[Math.floor(Math.random() * puzzles.length)];
 
   this.getBoardFromLayout = (idx) => {
     if (idx < 0 || idx >= puzzles.length) {
-      const message = `invalid game idx provided: ${idx}`
-      console.log(message)
+      const message = `invalid game idx provided: ${idx}`;
+      console.log(message);
       return {
         status: 404,
-        data: { message: message}
-      }
+        data: { message }
+      };
     }
 
-    return this.getBoardFromString(puzzles[idx])
-  }
+    return this.getBoardFromString(puzzles[idx]);
+  };
 
   this.getBoardFromString = (boardString) => {
-    const board = new Board(boardString)
+    const board = new Board(boardString);
     if (board.isValid) {
       return {
         status: 200,
         data: { board: board.boardData, bombCount: board.bombCount }
-      }
-    } else {
-      return {
-        status: 400,
-        data: { message: 'invalid board string provided' }
-      }
+      };
     }
-  }
+    return {
+      status: 400,
+      data: { message: 'invalid board string provided' }
+    };
+  };
 
-  this.isGameValid = (gameString) => {
-    return true
-  }
+  this.isGameValid = gameString => true;
 }
 
-const gameController = exports = new GameController()
-module.exports = { gameController }
+const gameController = exports = new GameController();
+module.exports = { gameController };
