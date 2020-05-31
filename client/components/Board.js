@@ -137,6 +137,7 @@ export default class Board extends Component {
 
   // This unfortunate piece of code is the result of not having enough time to figure out why my increment state wouldn't update.
   // Performs well anyway ¯\_(ツ)_/¯
+  // TODO: use visitedSet to calculate this?
   determineGameWon() {
     const { tiles } = this.state;
     const { size, bombCount } = this.props;
@@ -174,10 +175,10 @@ export default class Board extends Component {
   render() {
     const { lost, won, tiles } = this.state;
 
+    // TODO: render better win and lose scenarios, reveal board.
     if (lost) {
       return (<div className="lost">YOU LOSE</div>);
     }
-
 
     if (won) {
       return (<div className="won">YOU WIN</div>);
@@ -194,7 +195,6 @@ export default class Board extends Component {
             flag={tile.flag}
             handleClicked={(x, y) => this.handleClicked(x, y)}
             handleFlagged={(e, x, y) => this.handleFlagged(e, x, y)}
-            handleBombClick={() => this.handleBombClick()}
           />
         )))}
       </div>

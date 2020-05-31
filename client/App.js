@@ -37,7 +37,7 @@ export default class App extends Component {
     return (
       <div id="wrapper">
         <h1 id="title">... xxx XXX Minesweeper XXX xxx ...</h1>
-        <div id="restart" onClick={this.restartGame}>restart</div>
+        <div id="restart" onClick={this.restartGame}>Retry</div>
         <div id="board">
           <Board {...this.state} />
         </div>
