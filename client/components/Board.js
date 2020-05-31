@@ -35,6 +35,7 @@ export default class Board extends Component {
     this.handleFlagged = this.handleFlagged.bind(this);
     this.handleClicked = this.handleClicked.bind(this);
     this.handleEmptyTileClick = this.handleEmptyTileClick.bind(this);
+    this.determineGameWon = this.determineGameWon.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,7 +104,6 @@ export default class Board extends Component {
 
   handleClicked(x, y) {
     const { tiles } = this.state;
-
     const tile = tiles[x][y];
 
 
@@ -129,9 +129,14 @@ export default class Board extends Component {
     if (tile.value === "_") {
       this.handleEmptyTileClick(x, y);
     }
+    this.determineGameWon();
+  }
 
-
-    // This unfortunate piece of code is the result of not having enough time to figure out why my increment state wouldn't update.
+  // This unfortunate piece of code is the result of not having enough time to figure out why my increment state wouldn't update.
+  // Performs well anyway ¯\_(ツ)_/¯
+  determineGameWon() {
+    const { tiles } = this.state;
+    const { size, bombCount } = this.props;
     const flatTiles = tiles.flat(2);
     let tilecount = 0;
     for (let i = 0; i < flatTiles.length; i++) {
@@ -139,11 +144,10 @@ export default class Board extends Component {
         tilecount += 1;
       }
     }
-    if ((this.props.size * this.props.size - tilecount - this.props.bombCount) === 0) {
+    if ((size * size - tilecount - bombCount) === 0) {
       this.setState({ won: true });
     }
   }
-
 
   incrementCounter() {
     let { clickedCount } = this.state;
