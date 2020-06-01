@@ -15,10 +15,10 @@ export default class App extends Component {
   componentDidMount() {
     // TODO: Handle errors/ render error message on invalid board or invalid idx
     const qstring = window.location.search;
-    const baseurl = "https://minesweeperfullstack-codesmith.herokuapp.com/";
+    const baseurl = "minesweeperfullstack-codesmith.herokuapp.com/";
     console.log(process.env);
     console.log(process.env.env);
-    fetch(`http://${baseurl}/game/${qstring}`)
+    fetch(`https://${baseurl}/game/${qstring}`)
       .then(res => res.json())
       .then((board) => {
         this.setState({
