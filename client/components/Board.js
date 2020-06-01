@@ -91,7 +91,6 @@ export default class Board extends Component {
     if (emptyNeighbors.length === 0) {
       return;
     }
-    const { tiles } = this.state;
 
     emptyNeighbors.forEach((xyArray) => {
       const x1 = xyArray[0];
@@ -133,8 +132,6 @@ export default class Board extends Component {
     this.determineGameWon();
   }
 
-  // This unfortunate piece of code is the result of not having enough time to figure out why my increment state wouldn't update.
-  // Performs well anyway ¯\_(ツ)_/¯
   // TODO: use visitedSet to calculate this?
   determineGameWon() {
     const { tiles } = this.state;
