@@ -16,6 +16,8 @@ export default class App extends Component {
     // TODO: Handle errors/ render error message on invalid board or invalid idx
     const qstring = window.location.search;
     const baseurl = process.env.env ? "https://minesweeperfullstack-codesmith.herokuapp.com/" : "localhost:8080";
+    console.log(process.env);
+    console.log(process.env.env);
     fetch(`http://${baseurl}/game/${qstring}`)
       .then(res => res.json())
       .then((board) => {
