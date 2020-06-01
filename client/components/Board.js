@@ -26,7 +26,6 @@ export default class Board extends Component {
     super(props);
 
     this.state = {
-      clickedCount: 0,
       won: false,
       lost: false,
       visitedSet: new Set(),
@@ -43,7 +42,6 @@ export default class Board extends Component {
     const newTiles = Board.buildTileMatrix(nextProps.boardMatrix);
     if (nextProps.refresh) {
       this.setState({
-        clickedCount: 0,
         won: false,
         lost: false,
         visitedSet: new Set(),
